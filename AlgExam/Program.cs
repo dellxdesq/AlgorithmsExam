@@ -134,14 +134,10 @@ class Program
         Худший случай: O(n^2)
         */
 
-        //ShellSort.Start(10);
-        /*
-       int[] array = InsertionSort.GenerateRandomArray(10);
-       Console.WriteLine("| Quick Sort |");
-       Console.WriteLine($"Исходный массив массив: [ {string.Join(" ", array)} ]");
-       int[] result = InsertionSort.Start(array);
-       Console.WriteLine($"Отсортированный массив: [ {string.Join(" ", result)} ]");
-        */
+        
+       //BINARYTREE
+       //ОПИСАНИЕ---
+
         /*BinaryTree tree = new BinaryTree();
 
         // Добавляем элементы в дерево
@@ -161,9 +157,13 @@ class Program
 
         //RADIXSORT
         //ОПИСАНИЕ---
-         
-         
-        
-        
+
+        //STACK
+        //ОПИСАНИЕ---
+        //PrintStack.Print();
+
+        //QUEUE
+        //ОПИСАНИЕ---
+        QueuePrint.Print();
     }
 }
