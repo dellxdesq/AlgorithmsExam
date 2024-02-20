@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace AlgExam
 {
+    
     internal class QuickSort
     {
+        Stack<string> numbers = new Stack<string>();
         public static int[] Start(int[] array, int min, int max)
         {
             if (min >= max)
@@ -42,7 +44,7 @@ namespace AlgExam
                         i++;
                         j--;
                         Console.WriteLine($"Состояние массива: ");
-                        Print(array);
+                        
                     }
                 }
 
@@ -56,11 +58,6 @@ namespace AlgExam
             return array;
         }
 
-        private static void Print(int[] array)
-        {
-            Console.Write("[ ");
-            foreach (var item in array) Console.Write(item + " ");
-            Console.Write("]\n\n");
-        }
+        
     }
 }

@@ -95,7 +95,7 @@ class Program
         Худший случай: O(n^2)
         */
 
-        //ShakerSort2.Start(10);
+        //ShakerSort.Start(10);
         /*
         BINARY SEARCH:
         | ОПИСАНИЕ |
@@ -115,7 +115,7 @@ class Program
         O(log (n))
         */
 
-        //BinarySearch2.Start(20);
+        //BinarySearch.Start(20);
 
         /*
         SHELL SORT:
@@ -134,9 +134,9 @@ class Program
         Худший случай: O(n^2)
         */
 
-        
-       //BINARYTREE
-       //ОПИСАНИЕ---
+
+        //BINARYTREE
+        //ОПИСАНИЕ---
 
         /*BinaryTree tree = new BinaryTree();
 
@@ -152,8 +152,12 @@ class Program
         // Выводим отсортированные элементы дерева
         Console.WriteLine("Отсортированные элементы дерева:");
         tree.InOrderTraversal();*/
-
-
+        /*int[] array = { 111, 23, 54, 4, 5, 3, 10, 6 };
+        QuickSort.Start(array, 0, array.Length - 1);
+        foreach( int i in array )
+        {
+            Console.WriteLine(i);
+        }*/
 
         //RADIXSORT
         //ОПИСАНИЕ---
@@ -164,6 +168,33 @@ class Program
 
         //QUEUE
         //ОПИСАНИЕ---
-        QueuePrint.Print();
+        //QueuePrint.Print();
+
+
+        //DFSGraph
+        //ОПИСАНИЕ---
+        /*DFSGraph g = new DFSGraph(4);
+        g.AddEdge(0, 1);
+        g.AddEdge(0, 2);
+        g.AddEdge(1, 2);
+        g.AddEdge(2, 0);
+        g.AddEdge(2, 3);
+        g.AddEdge(3, 3);
+
+        Console.WriteLine("Обход графа в глубину (DFS) начиная с вершины 2:");
+        g.DFS(2);*/
+
+        //BFSGraph
+        //ОПИСАНИЕ---
+        BFSGraph g = new BFSGraph(4);
+        g.AddEdge(0, 1);
+        g.AddEdge(0, 2);
+        g.AddEdge(1, 2);
+        g.AddEdge(2, 0);
+        g.AddEdge(2, 3);
+        g.AddEdge(3, 3);
+
+        Console.WriteLine("Обход графа в ширину (BFS) начиная с вершины 2:");
+        g.BFS(2);
     }
 }
