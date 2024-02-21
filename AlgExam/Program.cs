@@ -228,7 +228,7 @@ class Program
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //PrimAlgorithm
         //ОПИСАНИЕ---
-        int V = 5; // Количество вершин в графе
+        /*int V = 5; // Количество вершин в графе
         PrimAlgorithm graph = new PrimAlgorithm(V);
 
         // Добавляем рёбра в граф
@@ -241,6 +241,48 @@ class Program
         graph.AddEdge(3, 4, 9);
 
         // Находим и выводим минимальное остовное дерево
-        graph.PrimMST();
+        graph.PrimMST();*/
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //HashTableChains
+        //Opisanie---
+        HashTableWithChaining<string, int> hashtable = new HashTableWithChaining<string, int>(5);
+
+        // Добавляем элементы в хэш-таблицу
+        hashtable.Add("apple", 10);
+        hashtable.Add("banana", 20);
+        hashtable.Add("cherry", 30);
+        hashtable.Add("date", 40);
+
+        // Выводим содержимое хэш-таблицы
+        hashtable.Print();
+
+        // Получаем значение по ключу и выводим его
+        if (hashtable.TryGetValue("banana", out int value))
+        {
+            Console.WriteLine($"Value of 'banana': {value}");
+        }
+
+        // Пытаемся получить значение по несуществующему ключу
+        if (!hashtable.TryGetValue("grape", out int _))
+        {
+            Console.WriteLine("Key 'grape' not found in the hashtable.");
+        }
+
+        // Пытаемся обратиться к значению по несуществующему ключу через индексатор
+        try
+        {
+            int value2 = hashtable["grape"];
+            Console.WriteLine($"Value of 'grape': {value2}");
+        }
+        catch (KeyNotFoundException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        // Удаляем элемент из хэш-таблицы и выводим обновлённое содержимое
+        hashtable.Remove("banana");
+        Console.WriteLine("After removing 'banana':");
+        hashtable.Print();
     }
 }
