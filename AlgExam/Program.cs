@@ -210,7 +210,7 @@ class Program
         //KruskalAlgorithm
         //ОПИСАНИЕ---
 
-        /*int V = 4;  // Количество вершин в графе
+        /*int V = 5;  // Количество вершин в графе
           
 
         KruskalAlgorithm graph = new KruskalAlgorithm(V);
@@ -223,30 +223,26 @@ class Program
         graph.AddEdge(2, 3, 4);
 
         // Находим и выводим минимальное остовное дерево
-        graph.KruskalMST();*/
-
+        graph.KruskalMST();
+        Console.WriteLine("----------------------------------");*/
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //PrimAlgorithm
         //ОПИСАНИЕ---
-        /*int V = 5; // Количество вершин в графе
-        PrimAlgorithm graph = new PrimAlgorithm(V);
+        /*PrimAlgorithm prim = new PrimAlgorithm(5);
+        prim.AddEdge(0, 1, 2);
+        prim.AddEdge(0, 3, 6);
+        prim.AddEdge(1, 2, 3);
+        prim.AddEdge(1, 3, 8);
+        prim.AddEdge(1, 4, 5);
+        prim.AddEdge(2, 4, 7);
+        prim.AddEdge(3, 4, 9);
 
-        // Добавляем рёбра в граф
-        graph.AddEdge(0, 1, 2);
-        graph.AddEdge(0, 3, 6);
-        graph.AddEdge(1, 2, 3);
-        graph.AddEdge(1, 3, 8);
-        graph.AddEdge(1, 4, 5);
-        graph.AddEdge(2, 4, 7);
-        graph.AddEdge(3, 4, 9);
-
-        // Находим и выводим минимальное остовное дерево
-        graph.PrimMST();*/
+        prim.PrimMST();*/
 
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //HashTableChains
         //Opisanie---
-        HashTableWithChaining<string, int> hashtable = new HashTableWithChaining<string, int>(5);
+        /*HashTableWithChaining<string, int> hashtable = new HashTableWithChaining<string, int>(5);
 
         // Добавляем элементы в хэш-таблицу
         hashtable.Add("apple", 10);
@@ -283,6 +279,20 @@ class Program
         // Удаляем элемент из хэш-таблицы и выводим обновлённое содержимое
         hashtable.Remove("banana");
         Console.WriteLine("After removing 'banana':");
-        hashtable.Print();
+        hashtable.Print();*/
+
+        int V = 5; // Количество вершин в графе
+        DijkstraAlgorithm graph = new DijkstraAlgorithm(V);
+
+        // Добавление ребер с их весами
+        graph.AddEdge(0, 1, 4);
+        graph.AddEdge(0, 2, 1);
+        graph.AddEdge(1, 2, 2);
+        graph.AddEdge(1, 3, 5);
+        graph.AddEdge(2, 3, 2);
+        graph.AddEdge(3, 4, 3);
+
+        // Поиск кратчайшего пути из вершины 0
+        graph.DijkstraShortestPath(0);
     }
 }

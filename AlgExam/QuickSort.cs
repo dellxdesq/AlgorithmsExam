@@ -8,8 +8,7 @@ namespace AlgExam
 {
     
     internal class QuickSort
-    {
-        Stack<string> numbers = new Stack<string>();
+    {        
         public static int[] Start(int[] array, int min, int max)
         {
             if (min >= max)
@@ -43,18 +42,14 @@ namespace AlgExam
                         (array[i], array[j]) = (array[j], array[i]);
                         i++;
                         j--;
-                        Console.WriteLine($"Состояние массива: ");
-                        
+                        Console.WriteLine($"Состояние массива: ");                        
                     }
                 }
-
                 return i;
             }
-
             var pivot = Sort(array, min, max);
             Start(array, min, pivot - 1);
             Start(array, pivot, max);
-
             return array;
         }
 
