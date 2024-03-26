@@ -1,4 +1,5 @@
 ﻿using AlgExam;
+using System.Collections;
 
 class Program
 {
@@ -242,44 +243,38 @@ class Program
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //HashTableChains
         //Opisanie---
-        /*HashTableWithChaining<string, int> hashtable = new HashTableWithChaining<string, int>(5);
+        /*HashTableWithChaining<int, string> hashtable = new HashTableWithChaining<int, string>(5);
 
-        // Добавляем элементы в хэш-таблицу
-        hashtable.Add("apple", 10);
-        hashtable.Add("banana", 20);
-        hashtable.Add("cherry", 30);
-        hashtable.Add("date", 40);
+        // Добавляем элементы
+        hashtable.Add(1, "Value1");
+        hashtable.Add(2, "Value2");
+        hashtable.Add(3, "Value3");
+        hashtable.Add(4, "Value4");
 
         // Выводим содержимое хэш-таблицы
+        Console.WriteLine("Contents of the hash table after additions:");
         hashtable.Print();
+        Console.WriteLine();
 
-        // Получаем значение по ключу и выводим его
-        if (hashtable.TryGetValue("banana", out int value))
+        // Попытка получения значения по ключу
+        if (hashtable.TryGetValue(2, out string value))
         {
-            Console.WriteLine($"Value of 'banana': {value}");
+            Console.WriteLine($"Value for key 2: {value}");
         }
+        else
+        {
+            Console.WriteLine("Key 2 not found in the hashtable.");
+        }
+        Console.WriteLine();
 
-        // Пытаемся получить значение по несуществующему ключу
-        if (!hashtable.TryGetValue("grape", out int _))
-        {
-            Console.WriteLine("Key 'grape' not found in the hashtable.");
-        }
+        // Удаляем элемент из хэш-таблицы
+        hashtable.Remove(3);
 
-        // Пытаемся обратиться к значению по несуществующему ключу через индексатор
-        try
-        {
-            int value2 = hashtable["grape"];
-            Console.WriteLine($"Value of 'grape': {value2}");
-        }
-        catch (KeyNotFoundException e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        // Удаляем элемент из хэш-таблицы и выводим обновлённое содержимое
-        hashtable.Remove("banana");
-        Console.WriteLine("After removing 'banana':");
+        // Выводим содержимое хэш-таблицы после удаления
+        Console.WriteLine("Contents of the hash table after removal:");
         hashtable.Print();*/
+
+        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         int V = 5; // Количество вершин в графе
         DijkstraAlgorithm graph = new DijkstraAlgorithm(V);
@@ -294,5 +289,30 @@ class Program
 
         // Поиск кратчайшего пути из вершины 0
         graph.DijkstraShortestPath(0);
+
+         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        /*HashTableOpen hashtable = new HashTableOpen(10);
+
+        // Добавление элементов
+        hashtable.Add(1, "One");
+        hashtable.Add(2, "Two");
+        hashtable.Add(11, "Eleven");
+        hashtable.Add(11, "gavno");
+        hashtable.Add(111, "Banana");
+
+        hashtable.Print();
+
+        // Получение элементов
+        Console.WriteLine(hashtable.Get(1)); // Выведет "One"
+        Console.WriteLine(hashtable.Get(2)); // Выведет "Two"
+        Console.WriteLine(hashtable.Get(11)); // Выведет "Eleven"
+
+        // Удаление элемента
+        hashtable.Remove(2);
+        Console.WriteLine(hashtable.Get(2)); // Выведет null
+
+        hashtable.Print();
+        // Получение размера
+        Console.WriteLine(hashtable.Size());*/
     }
 }

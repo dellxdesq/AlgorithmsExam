@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace AlgExam
 {
-    using System;
-    using System.Collections.Generic;
-
     public class HashTableWithChaining<TKey, TValue>
     {
         private int size; // Размер хэш-таблицы
         private LinkedList<(TKey key, TValue value)>[] buckets; // Массив связных списков для хранения элементов
+        private const int primeMultiplier = 31; // Константа для хэш-функции
 
         // Конструктор, инициализирующий хэш-таблицу заданного размера
         public HashTableWithChaining(int size)
@@ -28,16 +26,28 @@ namespace AlgExam
         // Метод для вычисления хэша ключа
         private int GetHash(TKey key)
         {
-            int hashCode = key.GetHashCode();
-            int index = Math.Abs(hashCode) % size;
-            return index; // Получаем хэш ключа и делим его на размер хэш-таблицы, чтобы получить индекс корзины
+            int hashCode = key.GetHashCode(); // Получаем хэш-код ключа
+            int hash = 0;
+            unchecked
+            {
+                hash = hashCode * primeMultiplier; // Умножаем хэш-код на простое число
+            }
+            return Math.Abs(hash) % size; // Возвращаем индекс корзины
         }
 
         // Метод для добавления элемента в хэш-таблицу
         public void Add(TKey key, TValue value)
         {
             int index = GetHash(key); // Вычисляем индекс корзины для ключа
-            buckets[index].AddLast((key, value)); // Добавляем элемент в список корзины по соответствующему индексу
+            var bucket = buckets[index]; // Получаем список элементов по индексу корзины
+            foreach (var pair in bucket)
+            {
+                if (pair.key.Equals(key)) // Проверяем, если ключ уже существует в корзине
+                {
+                    throw new ArgumentException($"Key '{key}' already exists in the hashtable.");
+                }
+            }
+            bucket.AddLast((key, value)); // Добавляем элемент в конец списка корзины
         }
 
         // Метод для удаления элемента из хэш-таблицы
@@ -73,33 +83,6 @@ namespace AlgExam
             return false; // Возвращаем false, если ключ не найден
         }
 
-        // Индексатор для установки и получения значений по ключу
-        public TValue this[TKey key]
-        {
-            get
-            {
-                if (TryGetValue(key, out TValue value)) // Пытаемся получить значение по ключу
-                    return value; // Возвращаем значение, если ключ найден
-                throw new KeyNotFoundException($"The key '{key}' was not found in the hashtable."); // Выбрасываем исключение, если ключ не найден
-            }
-            set
-            {
-                int index = GetHash(key);
-                var bucket = buckets[index];
-                foreach (var pair in bucket)
-                {
-                    if (pair.key.Equals(key))
-                    {
-                        // Создаем новую пару и заменяем старую
-                        bucket.Remove(pair);
-                        bucket.AddLast((key, value));
-                        return;
-                    }
-                }
-                throw new KeyNotFoundException($"The key '{key}' was not found in the hashtable.");
-            }
-        }
-
         // Метод для вывода содержимого хэш-таблицы
         public void Print()
         {
@@ -113,6 +96,6 @@ namespace AlgExam
                 Console.WriteLine("null"); // Выводим null для пустой корзины
             }
         }
-    }
 
+    }
 }

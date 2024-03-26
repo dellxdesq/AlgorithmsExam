@@ -15,39 +15,44 @@ namespace AlgExam
         {
             V = vertices;
             adj = new List<int>[V];
-            for (int i = 0; i < V; ++i)
+            for (int i = 0; i < V; i++)
             {
                 adj[i] = new List<int>();
             }
         }
 
-        // Метод для добавления ребра в граф
         public void AddEdge(int v, int w)
         {
-            adj[v].Add(w);
+            adj[v].Add(w); // Добавляем вершину w в список смежности вершины v
         }
 
-        // Вспомогательный метод для обхода графа в глубину
-        private void DFSUtil(int v, bool[] visited)
+        public void DFS(int startVertex)
         {
-            visited[v] = true; // Отмечаем текущую вершину как посещенную
-            Console.Write(v + " "); // Выводим номер текущей вершины
+            bool[] visited = new bool[V]; // Массив для отслеживания посещенных вершин
 
-            // Рекурсивно обходим все смежные вершины
-            foreach (var i in adj[v])
+            Stack<int> stack = new Stack<int>(); // Создаем стек для выполнения DFS
+
+            visited[startVertex] = true; // Помечаем начальную вершину как посещенную
+            stack.Push(startVertex); // Добавляем начальную вершину в стек
+
+            Console.WriteLine("обход начинается с вершины " + startVertex + ":");
+
+            while (stack.Count != 0)
             {
-                if (!visited[i])
+                int currentVertex = stack.Pop(); // Извлекаем текущую вершину из стека
+                Console.Write(currentVertex + " "); // Выводим текущую вершину
+
+                // Перебираем все смежные вершины текущей вершины
+                foreach (int adjacentVertex in adj[currentVertex])
                 {
-                    DFSUtil(i, visited);
+                    if (!visited[adjacentVertex]) // Если смежная вершина еще не посещена
+                    {
+                        visited[adjacentVertex] = true; // Помечаем ее как посещенную
+                        stack.Push(adjacentVertex); // Добавляем в стек для последующей обработки
+                    }
                 }
             }
-        }
-
-        // Метод для обхода графа в глубину
-        public void DFS(int v)
-        {
-            bool[] visited = new bool[V]; // Массив для отметки посещенных вершин
-            DFSUtil(v, visited); // Вызываем вспомогательный метод для обхода графа в глубину
+            Console.WriteLine();
         }
     }
 }

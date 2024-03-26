@@ -8,72 +8,61 @@ namespace AlgExam
 {
     public class DijkstraAlgorithm
     {
-        private int V; // Количество вершин в графе
-        private List<(int, int)>[] adj; // Список смежности для хранения ребер и их весов
+        private readonly int V;
+        private readonly List<(int vertex, int weight)>[] graph;
 
-        public DijkstraAlgorithm(int vertices)
+        public DijkstraAlgorithm(int v)
         {
-            V = vertices;
-            adj = new List<(int, int)>[V];
+            V = v;
+            graph = new List<(int vertex, int weight)>[V];
             for (int i = 0; i < V; i++)
-            {
-                adj[i] = new List<(int, int)>();
-            }
+                graph[i] = new List<(int vertex, int weight)>();
         }
 
-        // Добавление ребра в граф
-        public void AddEdge(int u, int v, int weight)
+        public void AddEdge(int src, int dest, int weight)
         {
-            adj[u].Add((v, weight));
-            adj[v].Add((u, weight)); // Если граф ориентированный, эту строку можно удалить
+            graph[src].Add((dest, weight));
+            graph[dest].Add((src, weight)); // Если граф ориентированный, эту строку можно закомментировать
         }
 
-        // Поиск кратчайшего пути из вершины source до всех остальных вершин с помощью алгоритма Дейкстры
-        public void DijkstraShortestPath(int source)
+        public void DijkstraShortestPath(int src)
         {
-            // Массив для хранения длин путей
             int[] dist = new int[V];
+            bool[] sptSet = new bool[V];
+
             for (int i = 0; i < V; i++)
             {
                 dist[i] = int.MaxValue;
+                sptSet[i] = false;
             }
 
-            // Массив для отметки посещенных вершин
-            bool[] visited = new bool[V];
+            dist[src] = 0;
 
-            // Инициализация начальной вершины
-            dist[source] = 0;
-
-            // Поиск кратчайшего пути
             for (int count = 0; count < V - 1; count++)
             {
-                int u = MinDistance(dist, visited);
-                visited[u] = true;
+                int u = MinDistance(dist, sptSet);
+                sptSet[u] = true;
 
-                foreach (var edge in adj[u])
+                foreach (var (v, weight) in graph[u])
                 {
-                    int v = edge.Item1;
-                    int weight = edge.Item2;
-                    if (!visited[v] && dist[u] != int.MaxValue && dist[u] + weight < dist[v])
+                    if (!sptSet[v] && dist[u] != int.MaxValue && dist[u] + weight < dist[v])
                     {
                         dist[v] = dist[u] + weight;
                     }
                 }
             }
 
-            // Вывод результатов
             PrintSolution(dist);
         }
 
-        // Поиск вершины с минимальным расстоянием
-        private int MinDistance(int[] dist, bool[] visited)
+        private int MinDistance(int[] dist, bool[] sptSet)
         {
             int min = int.MaxValue;
             int minIndex = -1;
 
             for (int v = 0; v < V; v++)
             {
-                if (!visited[v] && dist[v] <= min)
+                if (sptSet[v] == false && dist[v] <= min)
                 {
                     min = dist[v];
                     minIndex = v;
@@ -83,15 +72,13 @@ namespace AlgExam
             return minIndex;
         }
 
-        // Вывод результатов
         private void PrintSolution(int[] dist)
         {
-            Console.WriteLine("Кратчайшие расстояния от начальной вершины:");
+            Console.WriteLine("Vertex \t\t Distance from Source");
             for (int i = 0; i < V; i++)
             {
-                Console.WriteLine($"Вершина {i} -> Расстояние: {dist[i]}");
+                Console.WriteLine($"{i}\t\t{dist[i]}");
             }
         }
-
     }
 }
