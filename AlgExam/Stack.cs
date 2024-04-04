@@ -8,64 +8,69 @@ namespace AlgExam
 {
     public class Stack
     {
-        private StackNode top;
+        private StackNode top; // Верхушка стека
 
-        public void Push(int data)
-        {
-            StackNode newNode = new StackNode(data);
-            if (top == null)
-            {
-                top = newNode;
-            }
-            else
-            {
-                newNode.Next = top;
-                top.Prev = newNode;
-                top = newNode;
-            }
-        }
+// Метод для добавления элемента в стек
+public void Push(int data)
+{
+    StackNode newNode = new StackNode(data); // Создаем новый узел с переданными данными
+    if (top == null) // Если стек пустой
+    {
+        top = newNode; // Присваиваем верхушке новый узел
+    }
+    else
+    {
+        newNode.Next = top; // Устанавливаем следующий элемент нового узла на текущую верхушку
+        top.Prev = newNode; // Устанавливаем предыдущий элемент текущей верхушки на новый узел
+        top = newNode; // Обновляем верхушку стека
+    }
+}
 
-        public int Pop()
-        {
-            if (top == null)
-            {
-                Console.WriteLine("Stack is empty");
-                return -1; // or throw an exception
-            }
-            int data = top.Data;
-            top = top.Next;
-            if (top != null)
-            {
-                top.Prev = null;
-            }
-            return data;
-        }
+// Метод для удаления и возврата верхнего элемента из стека
+public int Pop()
+{
+    if (top == null) // Если стек пуст
+    {
+        Console.WriteLine("Stack is empty"); // Выводим сообщение об ошибке
+        return -1; // Возвращаем -1 или выбрасываем исключение
+    }
+    int data = top.Data; // Получаем данные верхнего элемента
+    top = top.Next; // Обновляем верхушку, убирая верхний элемент из стека
+    if (top != null)
+    {
+        top.Prev = null; // Если новая верхушка существует, убираем ссылку на предыдущий элемент
+    }
+    return data; // Возвращаем данные удаленного элемента
+}
 
-        public int Peek()
-        {
-            if (top == null)
-            {
-                Console.WriteLine("Stack is empty");
-                return -1; // or throw an exception
-            }
-            return top.Data;
-        }
+// Метод для получения значения верхнего элемента без удаления
+public int Peek()
+{
+    if (top == null) // Если стек пуст
+    {
+        Console.WriteLine("Stack is empty"); // Выводим сообщение об ошибке
+        return -1; // Возвращаем -1 или выбрасываем исключение
+    }
+    return top.Data; // Возвращаем данные верхнего элемента
+}
 
-        public bool IsEmpty()
-        {
-            return top == null;
-        }
+// Метод для проверки, пуст ли стек
+public bool IsEmpty()
+{
+    return top == null; // Возвращаем true, если верхушка стека равна null
+}
 
-        public void PrintStack()
-        {
-            StackNode current = top;
-            while (current != null)
-            {
-                Console.Write(current.Data + " -> ");
-                current = current.Next;
-            }
-            Console.WriteLine("null");
-        }
+// Метод для вывода содержимого стека
+public void PrintStack()
+{
+    StackNode current = top; // Устанавливаем текущий узел на верхушку стека
+    while (current != null) // Пока не достигнут конец стека
+    {
+        Console.Write(current.Data + " -> "); // Выводим данные текущего узла
+        current = current.Next; // Переходим к следующему узлу
+    }
+    Console.WriteLine("null"); // Выводим null, чтобы показать конец стека
+}
     }
     public class PrintStack
     {

@@ -7,92 +7,98 @@ using System.Threading.Tasks;
 namespace AlgExam
 {
     public class HashTableOpen
+{
+    private int[] keys; // Массив ключей
+    private string[] values; // Массив значений
+    private int capacity; // Емкость хэш-таблицы
+    private int size; // Текущий размер хэш-таблицы
+
+    public HashTableOpen(int capacity)
     {
-        private int[] keys;
-        private string[] values;
-        private int capacity;
-        private int size;
+        this.capacity = capacity; // Присваиваем переданную емкость
+        keys = new int[capacity]; // Инициализируем массив ключей заданной емкостью
+        values = new string[capacity]; // Инициализируем массив значений заданной емкостью
+        size = 0; // Начальный размер равен 0
+    }
 
-        public HashTableOpen(int capacity)
+    // Хэш-функция для метода открытой адресации
+    private int Hash(int key, int attempt)
+    {
+        return (key + attempt) % capacity; // Вычисляем индекс ячейки по ключу и попытке
+    }
+
+    // Метод для добавления элемента в хэш-таблицу
+    public void Add(int key, string value)
+    {
+        if (size == capacity) // Проверяем, заполнена ли хэш-таблица
         {
-            this.capacity = capacity;
-            keys = new int[capacity];
-            values = new string[capacity];
-            size = 0;
+            Console.WriteLine("Хэш-таблица заполнена!"); // Выводим сообщение и выходим из метода
+            return;
         }
 
-        private int Hash(int key, int attempt)
+        int attempt = 0; // Начальная попытка
+        int index = Hash(key, attempt); // Получаем начальный индекс для данного ключа
+        while (keys[index] != 0) // Пока не найдена пустая ячейка
         {
-            return (key + attempt) % capacity; // Хэш-функция для метода открытой адресации
+            attempt++; // Увеличиваем попытку
+            index = Hash(key, attempt); // Получаем новый индекс
         }
 
-        public void Add(int key, string value)
+        keys[index] = key; // Записываем ключ
+        values[index] = value; // Записываем значение
+        size++; // Увеличиваем размер
+    }
+
+    // Метод для получения значения по ключу
+    public string Get(int key)
+    {
+        int attempt = 0; // Начальная попытка
+        int index = Hash(key, attempt); // Получаем начальный индекс для данного ключа
+        while (keys[index] != 0) // Пока не найдена пустая ячейка
         {
-            if (size == capacity)
+            if (keys[index] == key) // Если найден ключ
+                return values[index]; // Возвращаем соответствующее значение
+            attempt++; // Увеличиваем попытку
+            index = Hash(key, attempt); // Получаем новый индекс
+        }
+        return null; // Если ключ не найден, возвращаем null
+    }
+
+    // Метод для удаления элемента по ключу
+    public void Remove(int key)
+    {
+        int attempt = 0; // Начальная попытка
+        int index = Hash(key, attempt); // Получаем начальный индекс для данного ключа
+        while (keys[index] != 0) // Пока не найдена пустая ячейка
+        {
+            if (keys[index] == key) // Если найден ключ
             {
-                Console.WriteLine("Хэш-таблица заполнена!");
-                return;
+                keys[index] = 0; // Удаляем ключ
+                values[index] = null; // Удаляем значение
+                size--; // Уменьшаем размер
+                return; // Выходим из метода
             }
-
-            int attempt = 0;
-            int index = Hash(key, attempt);
-            while (keys[index] != 0)
-            {
-                attempt++;
-                index = Hash(key, attempt);
-            }
-
-            keys[index] = key;
-            values[index] = value;
-            size++;
+            attempt++; // Увеличиваем попытку
+            index = Hash(key, attempt); // Получаем новый индекс
         }
+    }
 
-        public string Get(int key)
+    // Метод для получения текущего размера хэш-таблицы
+    public int Size()
+    {
+        return size; // Возвращаем текущий размер
+    }
+
+    // Метод для вывода содержимого хэш-таблицы
+    public void Print()
+    {
+        for (int i = 0; i < capacity; i++) // Проходим по всем ячейкам
         {
-            int attempt = 0;
-            int index = Hash(key, attempt);
-            while (keys[index] != 0)
+            if (keys[i] != 0) // Если ячейка не пуста
             {
-                if (keys[index] == key)
-                    return values[index];
-                attempt++;
-                index = Hash(key, attempt);
-            }
-            return null; // Элемент не найден
-        }
-
-        public void Remove(int key)
-        {
-            int attempt = 0;
-            int index = Hash(key, attempt);
-            while (keys[index] != 0)
-            {
-                if (keys[index] == key)
-                {
-                    keys[index] = 0;
-                    values[index] = null;
-                    size--;
-                    return;
-                }
-                attempt++;
-                index = Hash(key, attempt);
-            }
-        }
-
-        public int Size()
-        {
-            return size;
-        }
-
-        public void Print()
-        {
-            for (int i = 0; i < capacity; i++)
-            {
-                if (keys[i] != 0)
-                {
-                    Console.WriteLine($"Key: {keys[i]}, Value: {values[i]}");
-                }
+                Console.WriteLine($"Key: {keys[i]}, Value: {values[i]}"); // Выводим ключ и значение
             }
         }
     }
+}
 }

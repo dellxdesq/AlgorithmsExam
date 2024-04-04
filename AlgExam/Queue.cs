@@ -4,74 +4,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AlgExam
-{
+namespace AlgExam;
     public class Queue
+{
+    private StackNode front; // Указатель на начало очереди
+    private StackNode rear; // Указатель на конец очереди
+
+    // Метод для добавления элемента в очередь
+    public void Enqueue(int data)
     {
-        private StackNode front;
-        private StackNode rear;
-
-        public void Enqueue(int data)
+        StackNode newNode = new StackNode(data); // Создаем новый узел с переданными данными
+        if (rear == null) // Если очередь пуста
         {
-            StackNode newNode = new StackNode(data);
-            if (rear == null)
-            {
-                front = newNode;
-                rear = newNode;
-            }
-            else
-            {
-                rear.Next = newNode;
-                newNode.Prev = rear;
-                rear = newNode;
-            }
+            front = newNode; // Устанавливаем начало и конец очереди на новый узел
+            rear = newNode;
         }
-
-        public int Dequeue()
+        else
         {
-            if (front == null)
-            {
-                Console.WriteLine("Queue is empty");
-                return -1; // or throw an exception
-            }
-            int data = front.Data;
-            front = front.Next;
-            if (front != null)
-            {
-                front.Prev = null;
-            }
-            else
-            {
-                rear = null;
-            }
-            return data;
+            rear.Next = newNode; // Устанавливаем ссылку на новый узел в конец очереди
+            newNode.Prev = rear; // Устанавливаем ссылку на предыдущий узел для нового узла
+            rear = newNode; // Перемещаем указатель конца очереди на новый узел
         }
+    }
 
-        public int Peek()
+    // Метод для удаления и возврата элемента из начала очереди
+    public int Dequeue()
+    {
+        if (front == null) // Если очередь пуста
         {
-            if (front == null)
-            {
-                Console.WriteLine("Queue is empty");
-                return -1; // or throw an exception
-            }
-            return front.Data;
+            Console.WriteLine("Queue is empty"); // Выводим сообщение об ошибке
+            return -1; // Возвращаем -1 или выбрасываем исключение
         }
+        int data = front.Data; // Получаем данные первого элемента очереди
+        front = front.Next; // Обновляем указатель начала очереди, убирая первый элемент
+        if (front != null)
+        {
+            front.Prev = null; // Если новое начало очереди существует, убираем ссылку на предыдущий элемент
+        }
+        else
+        {
+            rear = null; // Если после удаления первого элемента очереди очередь пуста, обнуляем указатель на конец
+        }
+        return data; // Возвращаем данные удаленного элемента
+    }
 
-        public bool IsEmpty()
+    // Метод для получения значения первого элемента без удаления
+    public int Peek()
+    {
+        if (front == null) // Если очередь пуста
         {
-            return front == null;
+            Console.WriteLine("Queue is empty"); // Выводим сообщение об ошибке
+            return -1; // Возвращаем -1 или выбрасываем исключение
         }
+        return front.Data; // Возвращаем данные первого элемента очереди
+    }
 
-        public void PrintQueue()
+    // Метод для проверки, пуста ли очередь
+    public bool IsEmpty()
+    {
+        return front == null; // Возвращаем true, если начало очереди равно null
+    }
+
+    // Метод для вывода содержимого очереди
+    public void PrintQueue()
+    {
+        StackNode current = front; // Устанавливаем текущий узел на начало очереди
+        while (current != null) // Пока не достигнут конец очереди
         {
-            StackNode current = front;
-            while (current != null)
-            {
-                Console.Write(current.Data + " -> ");
-                current = current.Next;
-            }
-            Console.WriteLine("null");
+            Console.Write(current.Data + " -> "); // Выводим данные текущего узла
+            current = current.Next; // Переходим к следующему узлу
         }
+        Console.WriteLine("null"); // Выводим null, чтобы показать конец очереди
     }
 
     public class QueuePrint

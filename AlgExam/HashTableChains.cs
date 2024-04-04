@@ -6,96 +6,105 @@ using System.Threading.Tasks;
 
 namespace AlgExam
 {
-    public class HashTableWithChaining<TKey, TValue>
+    public class HashTableChains
+{
+    private LinkedList<KeyValuePair<int, string>>[] buckets; // Массив списков (цепочек)
+    private int capacity; // Емкость хэш-таблицы
+    private int size; // Текущий размер хэш-таблицы
+
+    public HashTableChains(int capacity)
     {
-        private int size; // Размер хэш-таблицы
-        private LinkedList<(TKey key, TValue value)>[] buckets; // Массив связных списков для хранения элементов
-        private const int primeMultiplier = 31; // Константа для хэш-функции
+        this.capacity = capacity; // Присваиваем переданную емкость
+        buckets = new LinkedList<KeyValuePair<int, string>>[capacity]; // Инициализируем массив списков заданной емкостью
+        size = 0; // Начальный размер равен 0
+    }
 
-        // Конструктор, инициализирующий хэш-таблицу заданного размера
-        public HashTableWithChaining(int size)
+    // Простая хэш-функция для метода цепочек
+    private int Hash(int key)
+    {
+        return key % capacity; // Вычисляем индекс корзины (списка) по ключу
+    }
+
+    // Метод для добавления элемента в хэш-таблицу
+    public void Add(int key, string value)
+    {
+        int index = Hash(key); // Получаем индекс корзины для данного ключа
+        if (buckets[index] == null) // Если в этой корзине еще нет списка
         {
-            this.size = size;
-            buckets = new LinkedList<(TKey key, TValue value)>[size]; // Создание массива списков
-            for (int i = 0; i < size; i++)
+            buckets[index] = new LinkedList<KeyValuePair<int, string>>(); // Создаем новый список
+        }
+
+        foreach (var pair in buckets[index]) // Проверяем, не существует ли уже такой ключ
+        {
+            if (pair.Key == key)
             {
-                buckets[i] = new LinkedList<(TKey key, TValue value)>(); // Инициализация каждого списка
+                Console.WriteLine($"Ключ {key} уже существует в таблице!"); // Выводим сообщение и выходим из метода
+                return;
             }
         }
 
-        // Метод для вычисления хэша ключа
-        private int GetHash(TKey key)
-        {
-            int hashCode = key.GetHashCode(); // Получаем хэш-код ключа
-            int hash = 0;
-            unchecked
-            {
-                hash = hashCode * primeMultiplier; // Умножаем хэш-код на простое число
-            }
-            return Math.Abs(hash) % size; // Возвращаем индекс корзины
-        }
+        buckets[index].AddLast(new KeyValuePair<int, string>(key, value)); // Добавляем новую пару ключ-значение в список
+        size++; // Увеличиваем размер хэш-таблицы
+    }
 
-        // Метод для добавления элемента в хэш-таблицу
-        public void Add(TKey key, TValue value)
+    // Метод для получения значения по ключу
+    public string Get(int key)
+    {
+        int index = Hash(key); // Получаем индекс корзины для данного ключа
+        if (buckets[index] != null) // Если в этой корзине есть список
         {
-            int index = GetHash(key); // Вычисляем индекс корзины для ключа
-            var bucket = buckets[index]; // Получаем список элементов по индексу корзины
-            foreach (var pair in bucket)
+            foreach (var pair in buckets[index]) // Просматриваем все пары ключ-значение в списке
             {
-                if (pair.key.Equals(key)) // Проверяем, если ключ уже существует в корзине
+                if (pair.Key == key) // Если найден ключ
                 {
-                    throw new ArgumentException($"Key '{key}' already exists in the hashtable.");
+                    return pair.Value; // Возвращаем соответствующее значение
                 }
             }
-            bucket.AddLast((key, value)); // Добавляем элемент в конец списка корзины
         }
+        return null; // Если ключ не найден, возвращаем null
+    }
 
-        // Метод для удаления элемента из хэш-таблицы
-        public bool Remove(TKey key)
+    // Метод для удаления элемента по ключу
+    public void Remove(int key)
+    {
+        int index = Hash(key); // Получаем индекс корзины для данного ключа
+        if (buckets[index] != null) // Если в этой корзине есть список
         {
-            int index = GetHash(key); // Вычисляем индекс корзины для ключа
-            var bucket = buckets[index]; // Получаем список элементов по индексу корзины
-            foreach (var pair in bucket)
+            var node = buckets[index].First; // Получаем первый узел списка
+            while (node != null) // Пока не конец списка
             {
-                if (pair.key.Equals(key)) // Проверяем каждый элемент списка на соответствие ключу
+                if (node.Value.Key == key) // Если найден ключ
                 {
-                    bucket.Remove(pair); // Удаляем элемент из списка, если ключ найден
-                    return true; // Возвращаем true, если удаление прошло успешно
+                    buckets[index].Remove(node); // Удаляем узел
+                    size--; // Уменьшаем размер хэш-таблицы
+                    return; // Выходим из метода
                 }
+                node = node.Next; // Переходим к следующему узлу
             }
-            return false; // Возвращаем false, если ключ не найден
         }
+    }
 
-        // Метод для получения значения по ключу
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            int index = GetHash(key); // Вычисляем индекс корзины для ключа
-            var bucket = buckets[index]; // Получаем список элементов по индексу корзины
-            foreach (var pair in bucket)
-            {
-                if (pair.key.Equals(key)) // Проверяем каждый элемент списка на соответствие ключу
-                {
-                    value = pair.value; // Присваиваем значение элемента переменной value
-                    return true; // Возвращаем true, если ключ найден
-                }
-            }
-            value = default(TValue); // Присваиваем переменной value значение по умолчанию, если ключ не найден
-            return false; // Возвращаем false, если ключ не найден
-        }
+    // Метод для получения текущего размера хэш-таблицы
+    public int Size()
+    {
+        return size; // Возвращаем текущий размер
+    }
 
-        // Метод для вывода содержимого хэш-таблицы
-        public void Print()
+    // Метод для вывода содержимого хэш-таблицы
+    public void Print()
+    {
+        for (int i = 0; i < capacity; i++) // Проходим по всем корзинам
         {
-            for (int i = 0; i < size; i++)
+            if (buckets[i] != null) // Если в текущей корзине есть список
             {
                 Console.Write($"Bucket {i}: "); // Выводим номер корзины
-                foreach (var pair in buckets[i]) // Перебираем элементы списка корзины
+                foreach (var pair in buckets[i]) // Просматриваем все пары ключ-значение в списке
                 {
-                    Console.Write($"({pair.key}, {pair.value}) -> "); // Выводим ключ и значение элемента
+                    Console.Write($"({pair.Key}, {pair.Value}) "); // Выводим ключ и значение
                 }
-                Console.WriteLine("null"); // Выводим null для пустой корзины
+                Console.WriteLine(); // Переходим на новую строку
             }
         }
-
     }
+}
 }
