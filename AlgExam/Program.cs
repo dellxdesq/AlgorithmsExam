@@ -119,7 +119,18 @@ class Program
         | СЛОЖНОСТЬ |
         O(log (n))
         */
+        /*int[] array = { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
+        int valueToFind = 2;
+        int resultIndex = Sort(array, valueToFind);
 
+        if (resultIndex != -1)
+        {
+        Console.WriteLine($"Значение {valueToFind} найдено в массиве по индексу {resultIndex}.");
+        }
+        else
+        {
+           Console.WriteLine($"Значение {valueToFind} не найдено в массиве.");
+        }*/
         //BinarySearch.Start(20);
 
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
