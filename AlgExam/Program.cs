@@ -174,7 +174,13 @@ class Program
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //RADIXSORT
         //ОПИСАНИЕ---
-
+        /*Сортирует строки
+        string[] strs = { "agga", "agsa", "hjre", "wqqq", "aagd", "hgewrh" };
+        MSD_RadixSort(strs, 0, strs.Length - 1, 0);
+        foreach (var elem in strs)
+        {
+            Console.Write(elem + " ");
+        }*/
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //STACK
         //ОПИСАНИЕ---
@@ -325,5 +331,15 @@ class Program
         hashtable.Print();
         // Получение размера
         Console.WriteLine(hashtable.Size());*/
+
+        /*ExternalMergeSort--------------------------------------------------------------------------------------------------------------------------------------------
+        string inputFilePath = "input.txt"; // Путь к исходному файлу
+        string tempDirPath = "temp"; // Путь к временной директории для промежуточных файлов
+
+        // Создание объекта сортировки и выполнение сортировки
+        var sorter = new ExternalMergeSort(inputFilePath, tempDirPath);
+        sorter.Sort();
+
+        Console.WriteLine("External merge sort completed.");*/
     }
 }

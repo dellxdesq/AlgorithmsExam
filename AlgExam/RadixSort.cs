@@ -8,38 +8,63 @@ namespace AlgExam
 {
     public class RadixSort
     {
-        // Метод для сортировки массива целых чисел
-        public static void Sort(int[] array)
-        {
-            int i, j; // Переменные для циклов
-            int[] tmp = new int[array.Length]; // Временный массив для хранения отсортированных чисел
+    public static void MSD_RadixSort(string[] strs, int low, int high, int index)
+    {
+     // Если нижний индекс больше или равен верхнему, возвращаемся
+     if (low >= high)
+     {
+         return;
+     }
 
-            // Начало цикла для обхода каждого бита в числах
-            for (int shift = sizeof(int) * 8 - 1; shift >= 0; shift--)
-            {
-                j = 0; // Счетчик для временного массива
+     // Создаем массив для подсчета
+     int[] count = new int[257];
+     // Создаем временный словарь
+     Dictionary<int, string> temp = new Dictionary<int, string>();
 
-                // Цикл для обхода каждого элемента во входном массиве
-                for (i = 0; i < array.Length; i++)
-                {
-                    // Преобразование текущего элемента из десятичной системы в двоичную и сдвиг влево на shift битов
-                    var before = Convert.ToString(array[i], toBase: 2);
-                    var a = array[i] << shift;
-                    var after = Convert.ToString(a, toBase: 2);
+     // Подсчитываем количество символов в каждой строке
+     for (int i = low; i <= high; i++)
+     {
+         var c = Char_at(strs[i], index);
+         count[c + 2]++;
+     }
 
-                    // Определение, нужно ли перемещать текущий элемент
-                    bool move = (a) >= 0;
+     // Суммируем подсчитанные значения
+     for (int r = 0; r < 256; r++)
+     {
+         count[r + 1] += count[r];
+     }
 
-                    // Перемещение элемента либо в основной массив, либо во временный массив в зависимости от move
-                    if (shift == 0 ? !move : move)
-                        array[i - j] = array[i];
-                    else
-                        tmp[j++] = array[i];
-                }
+     // Заполняем временный словарь
+     for (int i = low; i <= high; i++)
+     {
+         var c = Char_at(strs[i], index);
+         temp.Add(count[c + 1]++, strs[i]);
+     }
 
-                // Копирование временного массива обратно в основной массив
-                Array.Copy(tmp, 0, array, array.Length - j, j);
-            }
-        }
+     // Переносим строки обратно в исходный массив
+     for (int i = low; i <= high; i++)
+     {
+         strs[i] = temp[i - low];
+     }
+
+     // Вызываем MSD_RadixSort для каждой группы строк
+     for (int r = 0; r < 256; r++)
+     {
+         MSD_RadixSort(strs, low + count[r], low + count[r + 1] - 1, index + 1);
+     }
     }
+
+    // Получаем символ из строки по индексу
+    private static int Char_at(string str, int index)
+    {
+        // Если длина строки меньше или равна индексу, возвращаем -1
+        if (str.Length <= index)
+        {
+             return -1;
+        }
+
+        // Возвращаем ASCII-код символа по указанному индексу
+        return (int)str[index];
+ }
+}
 }
